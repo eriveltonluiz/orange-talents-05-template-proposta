@@ -12,9 +12,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import br.com.zupacademy.erivelton.proposta.config.excecao.DuplicidadeException;
 
 @RestControllerAdvice
 public class ErroDeValidacaoHandler extends ResponseEntityExceptionHandler{
@@ -35,6 +39,12 @@ public class ErroDeValidacaoHandler extends ResponseEntityExceptionHandler{
 		});
 		
 		return handleExceptionInternal(ex, erros, headers, status, request);
+	}
+	
+	@ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
+	@ExceptionHandler(DuplicidadeException.class)
+	public DetalhesErroDTO handleDuplicidade(DuplicidadeException ex) {
+		return new DetalhesErroDTO(ex.getMessage(), "Registro já existente!!", OffsetDateTime.now());
 	}
 	
 }

@@ -38,6 +38,10 @@ public class NovaPropostaRequisicao {
 		this.endereco = endereco;
 		this.salario = salario;
 	}
+	
+	public String getDocumento() {
+		return documento;
+	}
 
 	public Proposta paraEntidade() {
 		return new Proposta(documento, email, nome, endereco, salario);
