@@ -3,6 +3,8 @@ package br.com.zupacademy.erivelton.proposta.entidade;
 import java.math.BigDecimal;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +13,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
+import br.com.zupacademy.erivelton.proposta.enums.StatusFinanceiro;
 import br.com.zupacademy.erivelton.proposta.validacao.anotacao.CPFOuCNPJ;
 
 @Entity
@@ -37,6 +40,9 @@ public class Proposta {
 	@Positive
 	@NotNull
 	private BigDecimal salario;
+	
+	@Enumerated(EnumType.STRING)
+	private StatusFinanceiro estado;
 
 	@Deprecated
 	public Proposta() {
@@ -73,5 +79,13 @@ public class Proposta {
 	
 	public BigDecimal getSalario() {
 		return salario;
+	}
+	
+	public void setEstado(StatusFinanceiro estado) {
+		this.estado = estado;
+	}
+	
+	public String situacaoProposta() {
+		return this.estado.retornarMensagem();
 	}
 }
