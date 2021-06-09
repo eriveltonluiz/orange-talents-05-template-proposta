@@ -31,13 +31,16 @@ import br.com.zupacademy.erivelton.proposta.validacao.validador.ProibeDuplicidad
 @RestController
 @RequestMapping("/propostas")
 public class PropostaControle {
-	
+
 	@Autowired
 	private PropostaRepositorio propostaRepositorio;
-	
+
 	@Autowired
 	private ProibeDuplicidade proibeDuplicidade;
-	
+
+	@Autowired
+	private RestTemplate restTemplate;
+
 	@Value("${cartoes.host}")
 	private String urlAPIExterna;
 
@@ -45,35 +48,35 @@ public class PropostaControle {
 	public void init(WebDataBinder binder) {
 		binder.addValidators(proibeDuplicidade);
 	}
-	
+
 	@GetMapping("/{id}")
 	public DetalhesPropostaDTO buscarPropostaPorId(@PathVariable Long id) {
 		Proposta proposta = propostaRepositorio.findById(id).get();
-		
+
 		return new DetalhesPropostaDTO(proposta);
 	}
-	
+
 	@PostMapping
 	@Transactional
-	public ResponseEntity<String> salvar(@Valid @RequestBody NovaPropostaRequisicao requisicao, UriComponentsBuilder uriBuilder){
+	public ResponseEntity<String> salvar(@Valid @RequestBody NovaPropostaRequisicao requisicao,
+			UriComponentsBuilder uriBuilder) {
 		Proposta proposta = requisicao.paraEntidade();
 		propostaRepositorio.save(proposta);
-		
+
 		URI uriAPIExterna = null;
+		
 		try {
 			uriAPIExterna = new URI(urlAPIExterna);
 		} catch (URISyntaxException e) {
 			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
 		}
-				
-		RestTemplate template = new RestTemplate();
-		StatusFinanceiro status = template.postForObject(uriAPIExterna, proposta, StatusFinanceiro.class);
-		
+
+		StatusFinanceiro status = restTemplate.postForObject(uriAPIExterna, proposta, StatusFinanceiro.class);
 		proposta.setEstado(status);
-		
+
 		URI uri = uriBuilder.path("/propostas/{id}").buildAndExpand(proposta.getId()).toUri();
-		
+
 		return ResponseEntity.created(uri).body(proposta.situacaoProposta());
 	}
-	
+
 }
