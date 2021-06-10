@@ -1,4 +1,4 @@
-package br.com.zupacademy.erivelton.proposta.dto.requisicao;
+package br.com.zupacademy.erivelton.proposta.dto.interno.requisicao;
 
 import java.math.BigDecimal;
 

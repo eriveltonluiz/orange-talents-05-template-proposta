@@ -6,7 +6,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import br.com.zupacademy.erivelton.proposta.config.excecao.DuplicidadeException;
-import br.com.zupacademy.erivelton.proposta.dto.requisicao.NovaPropostaRequisicao;
+import br.com.zupacademy.erivelton.proposta.dto.interno.requisicao.NovaPropostaRequisicao;
 import br.com.zupacademy.erivelton.proposta.repositorio.PropostaRepositorio;
 
 @Component

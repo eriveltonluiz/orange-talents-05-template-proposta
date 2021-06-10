@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.zupacademy.erivelton.proposta.dto.requisicao.PropostaSecundariaDTO;
+import br.com.zupacademy.erivelton.proposta.dto.interno.requisicao.PropostaSecundariaDTO;
 import br.com.zupacademy.erivelton.proposta.enums.StatusFinanceiro;
 
 @RestController

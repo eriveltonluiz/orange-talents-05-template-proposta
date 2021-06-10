@@ -1,4 +1,4 @@
-package br.com.zupacademy.erivelton.proposta.dto.requisicao;
+package br.com.zupacademy.erivelton.proposta.dto.interno.requisicao;
 
 @SuppressWarnings("unused")
 public class PropostaSecundariaDTO {

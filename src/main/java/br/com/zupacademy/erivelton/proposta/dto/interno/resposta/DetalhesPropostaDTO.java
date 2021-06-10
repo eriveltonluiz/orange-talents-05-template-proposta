@@ -1,4 +1,4 @@
-package br.com.zupacademy.erivelton.proposta.dto.reposta;
+package br.com.zupacademy.erivelton.proposta.dto.interno.resposta;
 
 import br.com.zupacademy.erivelton.proposta.entidade.Proposta;
 
