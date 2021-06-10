@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.zupacademy.erivelton.proposta.apiexterna.APICartoesComponente;
 import br.com.zupacademy.erivelton.proposta.apiexterna.APIAnaliseFinanceiraProposta;
+import br.com.zupacademy.erivelton.proposta.apiexterna.APICartoes;
+import br.com.zupacademy.erivelton.proposta.config.excecao.RecursoNaoEncontradoException;
 import br.com.zupacademy.erivelton.proposta.dto.externo.requisicao.DadosPropostaRequisicao;
 import br.com.zupacademy.erivelton.proposta.dto.interno.requisicao.NovaPropostaRequisicao;
 import br.com.zupacademy.erivelton.proposta.dto.interno.resposta.DetalhesPropostaDTO;
@@ -39,9 +40,9 @@ public class PropostaControle {
 
 	@Autowired
 	private APIAnaliseFinanceiraProposta apiExterna;
-	
+
 	@Autowired
-	private APICartoesComponente apiCartoesComponente;
+	private APICartoes apiCartoes;
 
 	@InitBinder
 	public void init(WebDataBinder binder) {
@@ -49,10 +50,11 @@ public class PropostaControle {
 	}
 
 	@GetMapping("/{id}")
-	public DetalhesPropostaDTO buscarPropostaPorId(@PathVariable Long id) {
-		Proposta proposta = propostaRepositorio.findById(id).get();
+	public ResponseEntity<DetalhesPropostaDTO> buscarPropostaPorId(@PathVariable Long id) {
+		Proposta proposta = propostaRepositorio.findById(id)
+				.orElseThrow(() -> new RecursoNaoEncontradoException());
 
-		return new DetalhesPropostaDTO(proposta);
+		return ResponseEntity.ok(new DetalhesPropostaDTO(proposta.getEstado()));
 	}
 
 	@PostMapping
@@ -64,14 +66,15 @@ public class PropostaControle {
 
 		DadosPropostaRequisicao dadosProposta = new DadosPropostaRequisicao(proposta);
 		ResultadoSolicitacao resultado = apiExterna.postSolicitacao(dadosProposta);
-		proposta.setEstado(resultado.converterEnum());
 		
-		if(resultado.equals(ResultadoSolicitacao.COM_RESTRICAO)) {
+		proposta.setEstado(resultado.converterEnum());
+
+		if (resultado.equals(ResultadoSolicitacao.COM_RESTRICAO)) {
 			return ResponseEntity.unprocessableEntity().body(proposta.situacaoProposta());
 		}
-		
-		apiCartoesComponente.postCartoes(dadosProposta);
-		
+
+		apiCartoes.postCartoes(dadosProposta);
+
 		URI uri = uriBuilder.path("/propostas/{id}").buildAndExpand(proposta.getId()).toUri();
 		return ResponseEntity.created(uri).body(proposta.situacaoProposta());
 	}

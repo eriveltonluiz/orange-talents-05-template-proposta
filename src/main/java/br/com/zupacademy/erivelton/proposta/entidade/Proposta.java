@@ -86,6 +86,10 @@ public class Proposta {
 		return salario;
 	}
 	
+	public StatusFinanceiro getEstado() {
+		return estado;
+	}
+	
 	public void setEstado(StatusFinanceiro estado) {
 		this.estado = estado;
 	}

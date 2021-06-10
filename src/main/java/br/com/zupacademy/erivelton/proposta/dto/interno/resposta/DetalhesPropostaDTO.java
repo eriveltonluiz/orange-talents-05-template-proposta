@@ -1,16 +1,16 @@
 package br.com.zupacademy.erivelton.proposta.dto.interno.resposta;
 
-import br.com.zupacademy.erivelton.proposta.entidade.Proposta;
+import br.com.zupacademy.erivelton.proposta.enums.StatusFinanceiro;
 
 public class DetalhesPropostaDTO {
 
-	private String nome;
-
-	public DetalhesPropostaDTO(Proposta proposta) {
-		this.nome = proposta.getNome();
+	private StatusFinanceiro estadoProposta;
+	
+	public DetalhesPropostaDTO(StatusFinanceiro estadoProposta) {
+		this.estadoProposta = estadoProposta;
 	}
 
-	public String getNome() {
-		return nome;
+	public StatusFinanceiro getEstadoProposta() {
+		return estadoProposta;
 	}
 }

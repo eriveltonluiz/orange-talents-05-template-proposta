@@ -22,9 +22,9 @@ import br.com.zupacademy.erivelton.proposta.repositorio.CartaoRepositorio;
 import br.com.zupacademy.erivelton.proposta.repositorio.PropostaRepositorio;
 
 @Component
-public class APICartoesComponente {
+public class APICartoes {
 
-	private final Logger logger = LoggerFactory.getLogger(APICartoesComponente.class);
+	private final Logger logger = LoggerFactory.getLogger(APICartoes.class);
 
 	@Value("${cartoes.proposta.host}")
 	private String enderecoCartoes;

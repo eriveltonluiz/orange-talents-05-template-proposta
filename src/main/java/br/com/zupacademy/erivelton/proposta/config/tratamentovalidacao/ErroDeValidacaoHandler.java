@@ -19,6 +19,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import br.com.zupacademy.erivelton.proposta.config.excecao.DuplicidadeException;
+import br.com.zupacademy.erivelton.proposta.config.excecao.RecursoNaoEncontradoException;
 
 @RestControllerAdvice
 public class ErroDeValidacaoHandler extends ResponseEntityExceptionHandler{
@@ -47,4 +48,9 @@ public class ErroDeValidacaoHandler extends ResponseEntityExceptionHandler{
 		return new DetalhesErroDTO(ex.getMessage(), "Registro já existente!!", OffsetDateTime.now());
 	}
 	
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	@ExceptionHandler(RecursoNaoEncontradoException.class)
+	public DetalhesRecursoNaoEncontradoDTO handleRecursoNaoEncontrado(RecursoNaoEncontradoException ex) {
+		return new DetalhesRecursoNaoEncontradoDTO(ex.getMessage(), OffsetDateTime.now());
+	}
 }
