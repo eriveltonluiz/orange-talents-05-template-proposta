@@ -1,0 +1,36 @@
+version: '3.4'
+services:
+
+  mysqldb:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_PASSWORD=codando135
+      - MYSQL_ROOT_PASSWORD=codando135
+      - MYSQL_DATABASE=db_proposta
+    ports:
+      - "3307:3306"
+    networks: 
+      - production-network
+
+  proposta:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    image: proposta
+    ports:
+      - "8081:8080"
+    environment:
+      - SOLICITACAO_URL=http://172.22.0.1:9999/api/solicitacao
+      - CARTOES_URL=http://172.22.0.1:8888/api/cartoes
+      - CARTOES_PROPOSTA_URL=http://172.22.0.1:8888/api/cartoes?idProposta=
+      - PROFILE=prod
+    networks:
+      - production-network
+    depends_on:
+      - mysqldb
+      
+networks: 
+    production-network:
+        driver: bridge
+    
