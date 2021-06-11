@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import br.com.zupacademy.erivelton.proposta.config.excecao.DadoNaoEncontradoException;
 import br.com.zupacademy.erivelton.proposta.config.excecao.DuplicidadeException;
 import br.com.zupacademy.erivelton.proposta.config.excecao.RecursoNaoEncontradoException;
 
@@ -51,6 +52,12 @@ public class ErroDeValidacaoHandler extends ResponseEntityExceptionHandler{
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	@ExceptionHandler(RecursoNaoEncontradoException.class)
 	public DetalhesRecursoNaoEncontradoDTO handleRecursoNaoEncontrado(RecursoNaoEncontradoException ex) {
+		return new DetalhesRecursoNaoEncontradoDTO(ex.getMessage(), OffsetDateTime.now());
+	}
+	
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	@ExceptionHandler(DadoNaoEncontradoException.class)
+	public DetalhesRecursoNaoEncontradoDTO handleDadoNaoEncontrado(DadoNaoEncontradoException ex) {
 		return new DetalhesRecursoNaoEncontradoDTO(ex.getMessage(), OffsetDateTime.now());
 	}
 }
