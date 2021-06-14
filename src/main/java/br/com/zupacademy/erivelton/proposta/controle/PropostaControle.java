@@ -7,9 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +24,6 @@ import br.com.zupacademy.erivelton.proposta.dto.interno.resposta.DetalhesPropost
 import br.com.zupacademy.erivelton.proposta.entidade.Proposta;
 import br.com.zupacademy.erivelton.proposta.enums.ResultadoSolicitacao;
 import br.com.zupacademy.erivelton.proposta.repositorio.PropostaRepositorio;
-import br.com.zupacademy.erivelton.proposta.validacao.validador.ProibeDuplicidade;
 
 @RestController
 @RequestMapping("/propostas")
@@ -36,24 +33,15 @@ public class PropostaControle {
 	private PropostaRepositorio propostaRepositorio;
 
 	@Autowired
-	private ProibeDuplicidade proibeDuplicidade;
-
-	@Autowired
 	private APIAnaliseFinanceiraProposta apiExterna;
 
 	@Autowired
 	private APICartoes apiCartoes;
 
-	@InitBinder
-	public void init(WebDataBinder binder) {
-		binder.addValidators(proibeDuplicidade);
-	}
-
 	@GetMapping("/{id}")
 	public ResponseEntity<DetalhesPropostaDTO> buscarPropostaPorId(@PathVariable Long id) {
-		Proposta proposta = propostaRepositorio.findById(id)
-				.orElseThrow(() -> new RecursoNaoEncontradoException());
-
+		Proposta proposta = propostaRepositorio.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException());
+		
 		return ResponseEntity.ok(new DetalhesPropostaDTO(proposta.getEstado()));
 	}
 
@@ -66,7 +54,7 @@ public class PropostaControle {
 
 		DadosPropostaRequisicao dadosProposta = new DadosPropostaRequisicao(proposta);
 		ResultadoSolicitacao resultado = apiExterna.postSolicitacao(dadosProposta);
-		
+
 		proposta.setEstado(resultado.converterEnum());
 
 		if (resultado.equals(ResultadoSolicitacao.COM_RESTRICAO)) {

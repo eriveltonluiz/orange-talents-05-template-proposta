@@ -9,11 +9,13 @@ import javax.validation.constraints.Positive;
 
 import br.com.zupacademy.erivelton.proposta.entidade.Proposta;
 import br.com.zupacademy.erivelton.proposta.validacao.anotacao.CPFOuCNPJ;
+import br.com.zupacademy.erivelton.proposta.validacao.anotacao.UniqueValue;
 
 public class NovaPropostaRequisicao {
 	
 	@CPFOuCNPJ
 	@NotBlank
+	@UniqueValue(classe = Proposta.class, atributo = "documento", message = "Documento já cadastrado!!")
 	private String documento;
 	
 	@Email

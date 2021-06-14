@@ -4,14 +4,14 @@ import java.time.OffsetDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class DetalhesRecursoNaoEncontradoDTO {
+public class DetalhesErroSemCampoDTO {
 	
 	private String mensagem;
 	
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm.ss")
 	private OffsetDateTime momento;
 
-	public DetalhesRecursoNaoEncontradoDTO(String mensagem, OffsetDateTime momento) {
+	public DetalhesErroSemCampoDTO(String mensagem, OffsetDateTime momento) {
 		this.mensagem = mensagem;
 		this.momento = momento;
 	}

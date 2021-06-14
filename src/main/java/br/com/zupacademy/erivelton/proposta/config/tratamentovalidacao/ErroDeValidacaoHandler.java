@@ -45,19 +45,19 @@ public class ErroDeValidacaoHandler extends ResponseEntityExceptionHandler{
 	
 	@ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
 	@ExceptionHandler(DuplicidadeException.class)
-	public DetalhesErroDTO handleDuplicidade(DuplicidadeException ex) {
-		return new DetalhesErroDTO(ex.getMessage(), "Registro já existente!!", OffsetDateTime.now());
+	public DetalhesErroSemCampoDTO handleDuplicidade(DuplicidadeException ex) {
+		return new DetalhesErroSemCampoDTO(ex.getMessage(), OffsetDateTime.now());
 	}
 	
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	@ExceptionHandler(RecursoNaoEncontradoException.class)
-	public DetalhesRecursoNaoEncontradoDTO handleRecursoNaoEncontrado(RecursoNaoEncontradoException ex) {
-		return new DetalhesRecursoNaoEncontradoDTO(ex.getMessage(), OffsetDateTime.now());
+	public DetalhesErroSemCampoDTO handleRecursoNaoEncontrado(RecursoNaoEncontradoException ex) {
+		return new DetalhesErroSemCampoDTO(ex.getMessage(), OffsetDateTime.now());
 	}
 	
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	@ExceptionHandler(DadoNaoEncontradoException.class)
-	public DetalhesRecursoNaoEncontradoDTO handleDadoNaoEncontrado(DadoNaoEncontradoException ex) {
-		return new DetalhesRecursoNaoEncontradoDTO(ex.getMessage(), OffsetDateTime.now());
+	public DetalhesErroSemCampoDTO handleDadoNaoEncontrado(DadoNaoEncontradoException ex) {
+		return new DetalhesErroSemCampoDTO(ex.getMessage(), OffsetDateTime.now());
 	}
 }
