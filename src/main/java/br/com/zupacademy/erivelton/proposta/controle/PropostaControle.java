@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.zupacademy.erivelton.proposta.apiexterna.APIAnaliseFinanceiraProposta;
-import br.com.zupacademy.erivelton.proposta.apiexterna.APICartoes;
 import br.com.zupacademy.erivelton.proposta.config.excecao.RecursoNaoEncontradoException;
 import br.com.zupacademy.erivelton.proposta.dto.externo.requisicao.DadosPropostaRequisicao;
 import br.com.zupacademy.erivelton.proposta.dto.interno.requisicao.NovaPropostaRequisicao;
@@ -33,10 +32,7 @@ public class PropostaControle {
 	private PropostaRepositorio propostaRepositorio;
 
 	@Autowired
-	private APIAnaliseFinanceiraProposta apiExterna;
-
-	@Autowired
-	private APICartoes apiCartoes;
+	private APIAnaliseFinanceiraProposta apiAnaliseFinanceiraProposta;
 
 	@GetMapping("/{id}")
 	public ResponseEntity<DetalhesPropostaDTO> buscarPropostaPorId(@PathVariable Long id) {
@@ -53,15 +49,13 @@ public class PropostaControle {
 		propostaRepositorio.save(proposta);
 
 		DadosPropostaRequisicao dadosProposta = new DadosPropostaRequisicao(proposta);
-		ResultadoSolicitacao resultado = apiExterna.postSolicitacao(dadosProposta);
+		ResultadoSolicitacao resultado = apiAnaliseFinanceiraProposta.postSolicitacao(dadosProposta);
 
 		proposta.setEstado(resultado.converterEnum());
 
 		if (resultado.equals(ResultadoSolicitacao.COM_RESTRICAO)) {
 			return ResponseEntity.unprocessableEntity().body(proposta.situacaoProposta());
 		}
-
-		apiCartoes.postCartoes(dadosProposta);
 
 		URI uri = uriBuilder.path("/propostas/{id}").buildAndExpand(proposta.getId()).toUri();
 		return ResponseEntity.created(uri).body(proposta.situacaoProposta());

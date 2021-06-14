@@ -1,21 +1,17 @@
 package br.com.zupacademy.erivelton.proposta.dto.interno.requisicao;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+
+import br.com.zupacademy.erivelton.proposta.validacao.anotacao.Base64;
 
 public class NovaBiometriaRequisicao {
 
 	@NotBlank
+	@Base64
 	private String fingerprint;
-
-	@NotNull
-	private String identificadorCartao;
 
 	public String getFingerprint() {
 		return fingerprint;
 	}
-	
-	public String getIdentificadorCartao() {
-		return identificadorCartao;
-	}
+
 }

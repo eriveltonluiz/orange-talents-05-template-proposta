@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class BloqueioCartao {
@@ -16,9 +17,11 @@ public class BloqueioCartao {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotBlank
 	@Column(name = "ip_cliente")
 	private String ipCliente;
 	
+	@NotBlank
 	@Column(name = "user_agent")
 	private String userAgent;
 	

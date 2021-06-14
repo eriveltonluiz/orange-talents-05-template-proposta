@@ -13,10 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
-import br.com.zupacademy.erivelton.proposta.dto.externo.requisicao.DadosPropostaRequisicao;
+import br.com.zupacademy.erivelton.proposta.dto.externo.requisicao.RequisicaoBloqueio;
 import br.com.zupacademy.erivelton.proposta.dto.externo.resposta.CartaoGeradorDTO;
+import br.com.zupacademy.erivelton.proposta.dto.externo.resposta.RespostaBloqueioDTO;
 import br.com.zupacademy.erivelton.proposta.entidade.Cartao;
 import br.com.zupacademy.erivelton.proposta.entidade.Proposta;
+import br.com.zupacademy.erivelton.proposta.enums.EstadoCartao;
 import br.com.zupacademy.erivelton.proposta.enums.StatusFinanceiro;
 import br.com.zupacademy.erivelton.proposta.repositorio.CartaoRepositorio;
 import br.com.zupacademy.erivelton.proposta.repositorio.PropostaRepositorio;
@@ -27,7 +29,10 @@ public class APICartoes {
 	private final Logger logger = LoggerFactory.getLogger(APICartoes.class);
 
 	@Value("${cartoes.proposta.host}")
-	private String enderecoCartoes;
+	private String urlAPIExternaCartoesDaProposta;
+
+	@Value("${cartoes.host}")
+	private String urlAPIExternaCartoes;
 
 	@Autowired
 	private RestTemplate restTemplate;
@@ -38,10 +43,12 @@ public class APICartoes {
 	@Autowired
 	private PropostaRepositorio propostaRepositorio;
 
-	public void postCartoes(DadosPropostaRequisicao dadosProposta) {
-		restTemplate.postForObject(URI.create(enderecoCartoes), dadosProposta, CartaoGeradorDTO.class);
-		
-		logger.info("Chamando o endereço da API externa com POST!");
+	public EstadoCartao notificarBanco(String idCartao) {
+		String uriExternaBloqueioCartao = urlAPIExternaCartoes + "/" + idCartao + "/bloqueios";
+		RespostaBloqueioDTO estadoCartao = restTemplate.postForObject(URI.create(uriExternaBloqueioCartao),
+				new RequisicaoBloqueio("API proposta"), RespostaBloqueioDTO.class);
+
+		return Enum.valueOf(EstadoCartao.class, estadoCartao.getResultado());
 	}
 
 	@Scheduled(fixedDelayString = "${delay.execucao}")
@@ -52,7 +59,7 @@ public class APICartoes {
 		propostasAceitas.forEach(proposta -> {
 			try {
 				CartaoGeradorDTO cartaoRetornado = restTemplate
-						.getForObject(enderecoCartoes + proposta.getId(), CartaoGeradorDTO.class);
+						.getForObject(urlAPIExternaCartoesDaProposta + proposta.getId(), CartaoGeradorDTO.class);
 
 				Cartao cartao = cartaoRetornado.paraEntidadeCartao();
 				cartaoRepositorio.save(cartao);

@@ -21,9 +21,6 @@ public class APIAnaliseFinanceiraProposta {
 	@Value("${solicitacao.host}")
 	private String urlAPIExternaSolicitacao;
 
-	@Value("${cartoes.host}")
-	private String urlAPIExternaCartoes;
-
 	public ResultadoSolicitacao postSolicitacao(DadosPropostaRequisicao dadosProposta) {
 		try {
 			ResultadoSolicitacaoDTO dto = restTemplate.postForObject(URI.create(urlAPIExternaSolicitacao),
