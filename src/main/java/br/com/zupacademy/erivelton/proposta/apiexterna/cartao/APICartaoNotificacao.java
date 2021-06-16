@@ -14,7 +14,7 @@ import br.com.zupacademy.erivelton.proposta.dto.interno.requisicao.NovoAvisoViag
 import br.com.zupacademy.erivelton.proposta.enums.EstadoCartao;
 
 @Component
-public class APINotificacaoComponente {
+public class APICartaoNotificacao {
 
 	@Value("${cartoes.host}")
 	private String urlAPIExternaCartoes;
@@ -22,7 +22,7 @@ public class APINotificacaoComponente {
 	@Autowired
 	private RestTemplate restTemplate;
 	
-	public EstadoCartao notificarBanco(String idCartao) {
+	public EstadoCartao notificarBloqueioAoBanco(String idCartao) {
 		String uriExternaBloqueioCartao = urlAPIExternaCartoes + "/" + idCartao + "/bloqueios";
 		RespostaBloqueioDTO estadoCartao = restTemplate.postForObject(URI.create(uriExternaBloqueioCartao),
 				new RequisicaoBloqueio("API proposta"), RespostaBloqueioDTO.class);

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.zupacademy.erivelton.proposta.apiexterna.cartao.APINotificacaoComponente;
+import br.com.zupacademy.erivelton.proposta.apiexterna.cartao.APICartaoNotificacao;
 import br.com.zupacademy.erivelton.proposta.config.excecao.RecursoNaoEncontradoException;
 import br.com.zupacademy.erivelton.proposta.entidade.BloqueioCartao;
 import br.com.zupacademy.erivelton.proposta.entidade.Cartao;
@@ -26,7 +26,7 @@ public class BloqueioCartaoControle {
 	private EntityManager em;
 
 	@Autowired
-	private APINotificacaoComponente apiNotificacaoComponente;
+	private APICartaoNotificacao apiCartaoNotificacao;
 
 	@PostMapping(value = "/bloqueios/{idCartao}")
 	@Transactional
@@ -43,7 +43,7 @@ public class BloqueioCartaoControle {
 		BloqueioCartao bloqueioCartao = new BloqueioCartao(ipCliente, userAgent, cartao);
 		em.persist(bloqueioCartao);
 
-		EstadoCartao estadoCartao = apiNotificacaoComponente.notificarBanco(cartao.getId());
+		EstadoCartao estadoCartao = apiCartaoNotificacao.notificarBloqueioAoBanco(cartao.getId());
 		cartao.setEstado(estadoCartao);
 	}
 }

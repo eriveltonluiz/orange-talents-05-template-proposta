@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.zupacademy.erivelton.proposta.apiexterna.cartao.APINotificacaoComponente;
+import br.com.zupacademy.erivelton.proposta.apiexterna.cartao.APICartaoNotificacao;
 import br.com.zupacademy.erivelton.proposta.config.excecao.ErroRespostaAPIExternaException;
 import br.com.zupacademy.erivelton.proposta.dto.interno.requisicao.NovoAvisoViagemRequisicao;
 import br.com.zupacademy.erivelton.proposta.entidade.AvisoViagem;
@@ -25,7 +25,7 @@ public class AvisoViagemControle {
 	private EntityManager em;
 	
 	@Autowired
-	private APINotificacaoComponente apiNotificacaoComponente;
+	private APICartaoNotificacao apiNotificacaoComponente;
 
 	@PostMapping(value = "/avisos/viagens/{idCartao}")
 	@Transactional
