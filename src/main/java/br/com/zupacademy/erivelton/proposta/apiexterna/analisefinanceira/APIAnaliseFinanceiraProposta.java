@@ -1,4 +1,4 @@
-package br.com.zupacademy.erivelton.proposta.apiexterna;
+package br.com.zupacademy.erivelton.proposta.apiexterna.analisefinanceira;
 
 import java.net.URI;
 
@@ -21,10 +21,11 @@ public class APIAnaliseFinanceiraProposta {
 	@Value("${solicitacao.host}")
 	private String urlAPIExternaSolicitacao;
 
-	public ResultadoSolicitacao postSolicitacao(DadosPropostaRequisicao dadosProposta) {
+	public ResultadoSolicitacao postSolicitacaoAnalise(DadosPropostaRequisicao dadosProposta) {
 		try {
 			ResultadoSolicitacaoDTO dto = restTemplate.postForObject(URI.create(urlAPIExternaSolicitacao),
 					dadosProposta, ResultadoSolicitacaoDTO.class);
+			
 			return dto.getResultadoSolicitacao();
 		} catch (UnprocessableEntity e) {
 			return ResultadoSolicitacao.COM_RESTRICAO;

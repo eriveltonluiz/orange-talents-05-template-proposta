@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.zupacademy.erivelton.proposta.apiexterna.APICartoes;
+import br.com.zupacademy.erivelton.proposta.apiexterna.cartao.APINotificacaoComponente;
 import br.com.zupacademy.erivelton.proposta.config.excecao.RecursoNaoEncontradoException;
 import br.com.zupacademy.erivelton.proposta.entidade.BloqueioCartao;
 import br.com.zupacademy.erivelton.proposta.entidade.Cartao;
@@ -26,7 +26,7 @@ public class BloqueioCartaoControle {
 	private EntityManager em;
 
 	@Autowired
-	private APICartoes apiCartoes;
+	private APINotificacaoComponente apiNotificacaoComponente;
 
 	@PostMapping(value = "/bloqueios/{idCartao}")
 	@Transactional
@@ -35,8 +35,7 @@ public class BloqueioCartaoControle {
 			HttpServletRequest request) {
 		Cartao cartao = em.find(Cartao.class, idCartao);
 
-		if (cartao == null)
-			throw new RecursoNaoEncontradoException();
+		if (cartao == null) throw new RecursoNaoEncontradoException();
 
 		String ipCliente = request.getRemoteAddr();
 		String userAgent = request.getHeader("user-agent");
@@ -44,7 +43,7 @@ public class BloqueioCartaoControle {
 		BloqueioCartao bloqueioCartao = new BloqueioCartao(ipCliente, userAgent, cartao);
 		em.persist(bloqueioCartao);
 
-		EstadoCartao estadoCartao = apiCartoes.notificarBanco(cartao.getId());
+		EstadoCartao estadoCartao = apiNotificacaoComponente.notificarBanco(cartao.getId());
 		cartao.setEstado(estadoCartao);
 	}
 }

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.zupacademy.erivelton.proposta.apiexterna.APIAnaliseFinanceiraProposta;
+import br.com.zupacademy.erivelton.proposta.apiexterna.analisefinanceira.APIAnaliseFinanceiraProposta;
 import br.com.zupacademy.erivelton.proposta.config.excecao.RecursoNaoEncontradoException;
 import br.com.zupacademy.erivelton.proposta.dto.externo.requisicao.DadosPropostaRequisicao;
 import br.com.zupacademy.erivelton.proposta.dto.interno.requisicao.NovaPropostaRequisicao;
@@ -49,7 +49,7 @@ public class PropostaControle {
 		propostaRepositorio.save(proposta);
 
 		DadosPropostaRequisicao dadosProposta = new DadosPropostaRequisicao(proposta);
-		ResultadoSolicitacao resultado = apiAnaliseFinanceiraProposta.postSolicitacao(dadosProposta);
+		ResultadoSolicitacao resultado = apiAnaliseFinanceiraProposta.postSolicitacaoAnalise(dadosProposta);
 
 		proposta.setEstado(resultado.converterEnum());
 

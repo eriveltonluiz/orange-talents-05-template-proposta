@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.zupacademy.erivelton.proposta.config.excecao.DadoNaoEncontradoException;
+import br.com.zupacademy.erivelton.proposta.config.excecao.RecursoNaoEncontradoException;
 import br.com.zupacademy.erivelton.proposta.dto.interno.requisicao.NovaBiometriaRequisicao;
 import br.com.zupacademy.erivelton.proposta.entidade.Biometria;
 import br.com.zupacademy.erivelton.proposta.entidade.Cartao;
@@ -31,10 +31,7 @@ public class BiometriaControle {
 			@PathVariable String idCartao, UriComponentsBuilder uriBuilder) {
 		Cartao cartao = em.find(Cartao.class, idCartao);
 
-		if (cartao == null) {
-			throw new DadoNaoEncontradoException("Identificador do cartão não foi encontrado!!");
-		}
-
+		if (cartao == null) throw new RecursoNaoEncontradoException();
 
 		Biometria biometria = new Biometria(requisicao.getFingerprint(), cartao);
 		em.persist(biometria);
