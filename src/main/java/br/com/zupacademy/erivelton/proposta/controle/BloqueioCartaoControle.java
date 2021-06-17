@@ -30,7 +30,7 @@ public class BloqueioCartaoControle {
 
 	@PostMapping(value = "/bloqueios/{idCartao}")
 	@Transactional
-	public void salvar(
+	public void bloquearCartao(
 			@PathVariable @UniqueValue(classe = BloqueioCartao.class, atributo = "cartao.id", message = "Cartão já está bloqueado") String idCartao,
 			HttpServletRequest request) {
 		Cartao cartao = em.find(Cartao.class, idCartao);

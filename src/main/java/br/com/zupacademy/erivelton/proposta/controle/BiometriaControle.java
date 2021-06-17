@@ -27,7 +27,7 @@ public class BiometriaControle {
 
 	@PostMapping(value = "/biometrias/{idCartao}")
 	@Transactional
-	public ResponseEntity<Void> salvar(@Valid @RequestBody NovaBiometriaRequisicao requisicao,
+	public ResponseEntity<Void> salvarBiometriaCartao(@Valid @RequestBody NovaBiometriaRequisicao requisicao,
 			@PathVariable String idCartao, UriComponentsBuilder uriBuilder) {
 		Cartao cartao = em.find(Cartao.class, idCartao);
 
