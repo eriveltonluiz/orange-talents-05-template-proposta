@@ -2,30 +2,35 @@ version: '3.4'
 services:
 
   mysqldb:
-    image: mysql
+    image: 'mysql'
     environment:
       - MYSQL_ROOT_HOST=%
       - MYSQL_PASSWORD=codando135
       - MYSQL_ROOT_PASSWORD=codando135
       - MYSQL_DATABASE=db_proposta
     ports:
-      - "3307:3306"
+      - 3307:3306
     networks: 
       - production-network
 
   proposta:
     build:
-      context: ./
-      dockerfile: ./Dockerfile
+      context: .
+      dockerfile: Dockerfile
     image: proposta
     ports:
-      - "8081:8080"
+      - 8081:8080
     environment:
-      - SOLICITACAO_URL=http://172.22.0.1:9999/api/solicitacao
-      - CARTOES_URL=http://172.22.0.1:8888/api/cartoes
-      - CARTOES_PROPOSTA_URL=http://172.22.0.1:8888/api/cartoes?idProposta=
-      - PROFILE=prod
-    networks:
+      DATABASE_URL: "jdbc:mysql://mysqldb:3306/db_proposta"
+      USERNAME: "root"
+      PASSWORD: "codando135"
+      SOLICITACAO_URL: "http://172.22.0.1:9999/api/solicitacao"
+      CARTOES_URL: "http://172.22.0.1:8888/api/cartoes"
+      CARTOES_PROPOSTA_URL: "http://172.22.0.1:8888/api/cartoes?idProposta="
+      ACTUATOR_URL: "http://localhost:8081/actuator/health"
+      PROVEDOR_TOKEN_URL: "http://172.22.0.1:18080/auth/realms/nosso-cartao/protocol/openid-connect/certs"
+      PROFILE: "prod"
+    networks: 
       - production-network
     depends_on:
       - mysqldb

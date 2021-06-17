@@ -5,7 +5,7 @@ import javax.validation.ConstraintValidatorContext;
 
 import br.com.zupacademy.erivelton.proposta.validacao.anotacao.Base64;
 
-public class ValidatorBase64 implements ConstraintValidator<Base64, String>{
+public class Base64Validador implements ConstraintValidator<Base64, String>{
 
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {

@@ -46,4 +46,8 @@ public class CarteiraDigital {
 		this.cartao = cartao;
 	}
 	
+	public String getId() {
+		return id;
+	}
+	
 }

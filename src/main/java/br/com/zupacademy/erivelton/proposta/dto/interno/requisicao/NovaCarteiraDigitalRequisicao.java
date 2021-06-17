@@ -39,4 +39,8 @@ public class NovaCarteiraDigitalRequisicao {
 
 		return new CarteiraDigital(respostaAPIExterna.getId(), email, carteira, estado, cartao);
 	}
+
+	public boolean verificarEmissor() {
+		return carteira.equals(TipoCarteiraDigital.PAYPAL);
+	}
 }
