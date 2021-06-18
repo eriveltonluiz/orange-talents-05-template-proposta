@@ -23,8 +23,6 @@ import br.com.zupacademy.erivelton.proposta.dto.interno.resposta.DetalhesPropost
 import br.com.zupacademy.erivelton.proposta.entidade.Proposta;
 import br.com.zupacademy.erivelton.proposta.enums.ResultadoSolicitacao;
 import br.com.zupacademy.erivelton.proposta.repositorio.PropostaRepositorio;
-import io.opentracing.Span;
-import io.opentracing.Tracer;
 
 @RestController
 @RequestMapping("/propostas")
@@ -36,8 +34,8 @@ public class PropostaControle {
 	@Autowired
 	private APIAnaliseFinanceiraProposta apiAnaliseFinanceiraProposta;
 	
-	@Autowired
-	private Tracer tracer;
+//	@Autowired
+//	private Tracer tracer;
 
 	@GetMapping("/{id}")
 	public ResponseEntity<DetalhesPropostaDTO> buscarPropostaPorId(@PathVariable Long id) {
@@ -50,9 +48,9 @@ public class PropostaControle {
 	@Transactional
 	public ResponseEntity<String> salvar(@Valid @RequestBody NovaPropostaRequisicao requisicao,
 			UriComponentsBuilder uriBuilder) {
-		Span span = tracer.activeSpan();
-		span.setTag("endpoint", "cadastro-proposta");
-		span.setBaggageItem("API", "proposta");
+//		Span span = tracer.activeSpan();
+//		span.setTag("endpoint", "cadastro-proposta");
+//		span.setBaggageItem("API", "proposta");
 		
 		Proposta proposta = requisicao.paraEntidade();
 		propostaRepositorio.save(proposta);
