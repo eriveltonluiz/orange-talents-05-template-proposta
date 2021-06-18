@@ -16,7 +16,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 import br.com.zupacademy.erivelton.proposta.enums.StatusFinanceiro;
-import br.com.zupacademy.erivelton.proposta.validacao.anotacao.CPFOuCNPJ;
 
 @Entity
 public class Proposta {
@@ -25,7 +24,6 @@ public class Proposta {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@CPFOuCNPJ
 	@NotBlank
 	private String documento;
 	

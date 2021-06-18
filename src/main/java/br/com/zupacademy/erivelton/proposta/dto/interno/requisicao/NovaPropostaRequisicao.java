@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
+import br.com.zupacademy.erivelton.proposta.config.utils.Criptografia;
 import br.com.zupacademy.erivelton.proposta.entidade.Proposta;
 import br.com.zupacademy.erivelton.proposta.validacao.anotacao.CPFOuCNPJ;
 import br.com.zupacademy.erivelton.proposta.validacao.anotacao.UniqueValue;
@@ -46,6 +47,6 @@ public class NovaPropostaRequisicao {
 	}
 
 	public Proposta paraEntidade() {
-		return new Proposta(documento, email, nome, endereco, salario);
+		return new Proposta(Criptografia.criptografar(documento), email, nome, endereco, salario);
 	}
 }

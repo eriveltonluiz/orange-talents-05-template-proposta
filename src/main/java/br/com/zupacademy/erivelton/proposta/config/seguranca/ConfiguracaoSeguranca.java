@@ -15,7 +15,7 @@ public class ConfiguracaoSeguranca extends WebSecurityConfigurerAdapter {
 		http.csrf().disable()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
-				.authorizeRequests().antMatchers("/actuator/**").permitAll()
+				.authorizeRequests().antMatchers("/actuator/prometheus").permitAll()
 				.anyRequest().authenticated()
 				.and()
 				.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
